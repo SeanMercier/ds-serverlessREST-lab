@@ -41,7 +41,8 @@ export class RestAPIStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
       memorySize: 128,
       environment: {
-        TABLE_NAME: moviesTable.tableName,
+        MOVIES_TABLE_NAME: moviesTable.tableName,
+        MOVIE_CAST_TABLE_NAME: movieCastsTable.tableName,
         REGION: 'eu-west-1',
       },
     });
@@ -118,6 +119,8 @@ export class RestAPIStack extends cdk.Stack {
     moviesTable.grantReadWriteData(deleteMovieFn);
     moviesTable.grantReadWriteData(newMovieFn);
     movieCastsTable.grantReadData(getMovieCastMembersFn);
+    movieCastsTable.grantReadData(getMovieByIdFn);
+
 
     // API Gateway
     const api = new apig.RestApi(this, "RestAPI", {
